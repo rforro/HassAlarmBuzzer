@@ -82,18 +82,18 @@ void reconnect_mqtt() {
   char payload[255];
 
   while (!mqtt.connected()) {
-    if (mqtt.connect("esp8266", mqtt_user, mqtt_pass, alarm_topic_available, 0, false, "offline")) {
+    if (mqtt.connect("esp8266", mqtt_user, mqtt_pass, alarm_topic_available, 0, true, "offline")) {
       mqtt.subscribe(alarm_topic_cmd);
       snprintf(payload, sizeof(payload), ALARM_PAYLOAD_CONFIG, alarm_topic_available, alarm_topic_cmd, "Alarm armed", "ARMED");
-      mqtt.publish(alarm_topic_config_armed, payload);
+      mqtt.publish(alarm_topic_config_armed, payload, true);
       delay(1000);
       snprintf(payload, sizeof(payload), ALARM_PAYLOAD_CONFIG, alarm_topic_available, alarm_topic_cmd, "Alarm disarmed", "DISARMED");
-      mqtt.publish(alarm_topic_config_disarmed, payload);
+      mqtt.publish(alarm_topic_config_disarmed, payload, true);
       delay(1000);
       snprintf(payload, sizeof(payload), ALARM_PAYLOAD_CONFIG, alarm_topic_available, alarm_topic_cmd, "Alarm panic", "PANIC");
-      mqtt.publish(alarm_topic_config_panic, payload);
+      mqtt.publish(alarm_topic_config_panic, payload, true);
       delay(1000);
-      mqtt.publish(alarm_topic_available, "online");
+      mqtt.publish(alarm_topic_available, "online", true);
     } else {
       delay(5000);
     }
