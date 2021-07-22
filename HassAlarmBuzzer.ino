@@ -2,21 +2,18 @@
 #include <PubSubClient.h>
 #include <WiFiClient.h>
 
+#define WIFI_SSID "ssid"
+#define WIFI_PASS "pass"
+#define MQTT_BROKER "homeassistant.local"
+#define MQTT_USER "mqtt-user"
+#define MQTT_PASS "mqtt-pass"
+
 #define ALARM_PAYLOAD_CONFIG "{\"avty_t\":\"%s\",\"cmd_t\":\"%s\",\"name\":\"%s\",\"pl_on\":\"%s\"}"
 #define PIN_BUZZER D2
 #define TONE_KHZ 1100
 #define PITCH_LOW 200
 #define PITCH_HIGH 1000
 #define PANIC_ALARM_DURATION 15000
-
-WiFiClient client;
-PubSubClient mqtt(mqtt_server, 1883, callback, client);
-
-char ssid[] = "ssid";
-char pass[] = "password";
-char mqtt_server[] = "homeassistant.local";
-char mqtt_user[] = "mqttuser";
-char mqtt_pass[] = "password";
 
 char alarm_topic_cmd[] = "homeassistant/scene/esp8266/cmd";
 char alarm_topic_available[] = "homeassistant/scene/esp8266/available";
@@ -33,10 +30,13 @@ unsigned long panicMillis = 0;
 void callback(char* topic, byte* payload, unsigned int length);
 void reconnect_mqtt();
 
+WiFiClient client;
+PubSubClient mqtt(MQTT_BROKER, 1883, callback, client);
+
 void setup() {
   pinMode(PIN_BUZZER, OUTPUT);
 
-  WiFi.begin(ssid, pass);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
   if (WiFi.waitForConnectResult() != WL_CONNECTED) {
     ESP.restart();
   }
@@ -82,7 +82,7 @@ void reconnect_mqtt() {
   char payload[255];
 
   while (!mqtt.connected()) {
-    if (mqtt.connect("esp8266", mqtt_user, mqtt_pass, alarm_topic_available, 0, true, "offline")) {
+    if (mqtt.connect("esp8266", MQTT_USER, MQTT_PASS, alarm_topic_available, 0, true, "offline")) {
       mqtt.subscribe(alarm_topic_cmd);
       snprintf(payload, sizeof(payload), ALARM_PAYLOAD_CONFIG, alarm_topic_available, alarm_topic_cmd, "Alarm armed", "ARMED");
       mqtt.publish(alarm_topic_config_armed, payload, true);
