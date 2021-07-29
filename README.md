@@ -1,6 +1,6 @@
 # HassAlarmBuzzer
 
-In my opinion the [manual alarm control panel](https://www.home-assistant.io/integrations/manual/) is one of the best features you should have in your Homeassistant. It doesn’t require any special hardware. You can use any of your typical sensors and smart switches (like IKEA Tradfri, Shelly, Sonoff and many more) or you can build your own hardwarecontrol panel. There is only one problem. It won’t give you feedback unless you are controlling it through the Homeassistant app. Because I prefer the headless usage, I’ve decided to build my own WiFi enabled MQTT buzzer, which beeps every time when I arm or disarm the alarm.
+In my opinion the [manual alarm control panel](https://www.home-assistant.io/integrations/manual/) is one of the best features you should have in your Homeassistant. It doesn’t require any special hardware. You can use any of your typical sensors and smart switches (like IKEA Tradfri, Shelly, Sonoff and many more) or you can build your own hardware control panel. There is only one problem. It won’t give you feedback unless you are controlling it through the Homeassistant app. Because I prefer the headless usage, I’ve decided to build my own WiFi enabled MQTT buzzer, which beeps every time when I arm or disarm the alarm.
 
 ## Components
 
